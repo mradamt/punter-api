@@ -1,9 +1,11 @@
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS prompts CASCADE;
-DROP TABLE IF EXISTS posts CASCADE;
-DROP TABLE IF EXISTS reaction_types CASCADE;
+-- Drop tables in reverse order
 DROP TABLE IF EXISTS users_posts_reactions CASCADE;
+DROP TABLE IF EXISTS reaction_types CASCADE;
+DROP TABLE IF EXISTS posts CASCADE;
+DROP TABLE IF EXISTS prompts CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
+-- CREATE TABLEs in order of least dependent to most dependent
 CREATE TABLE users (
   id SERIAL PRIMARY KEY NOT NULL,
   username varchar(3) NOT NULL ,
