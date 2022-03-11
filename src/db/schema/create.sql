@@ -29,7 +29,7 @@ CREATE TABLE reaction_types (
   id SERIAL PRIMARY KEY NOT NULL,
   index INTEGER DEFAULT 0 NOT NULL,
   label VARCHAR(20) NOT NULL,
-  icon VARCHAR(255) NOT NULL,
+  icon VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE users_posts_reactions (
