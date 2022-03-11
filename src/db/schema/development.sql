@@ -18,5 +18,5 @@ INSERT INTO reaction_types (index, label, icon)
 
 INSERT INTO posts (user_id, prompt_id, text, creation_date)
   VALUES
-    (1, 1, "We'd be riding really fun ebikes made by Wheeebikes", "2022-01-01"),
-    (2, 1, "We'd go to Totes Boats for all our boating needs", "2022-01-02");
+    (1, 1, "We'd be riding really fun ebikes made by Wheeebikes", "2022-01-01 09:00:00-08"),
+    (2, 1, "We'd go to Totes Boats for all our boating needs", "2022-01-02 09:00:00-08");
