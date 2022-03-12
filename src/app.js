@@ -7,7 +7,7 @@ const helmet = require('helmet')
 
 const app = express();
 
-const db = require('./db');
+// const db = require('./db');
 
 // const routes = require('./routes/')
 
@@ -15,8 +15,6 @@ app.get('/', (req, res) => {
   res.send('Oh hi Mark')
 })
 
-function app () {
-  
-}
+module.exports = app
 
-module.exports = app;
+

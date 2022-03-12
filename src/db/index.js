@@ -6,6 +6,6 @@ const client = new Client({
 
 client
   .connect()
-  .catch(err => console.log(`Unable to connect to postgres server:\n${err}`))
+  .catch(err => console.log(`Unable to connect to postgres server\n${err}`))
 
 module.exports = client;
