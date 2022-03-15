@@ -38,6 +38,14 @@ app.get('/dbreset', (req, res) => {
   })
   .catch(err => console.log(err))
 })
+
+app.get('/users', (req, res) => {
+  db.query('select * from Users;')
+  .then(({rows: users}) => {
+    res.send(res.json(users))
+  })
+})
+
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
 })

@@ -2,7 +2,8 @@
 INSERT INTO users (username, password) 
   VALUES
     ('ABC', 'ABC'),
-    ('DEF', 'DEF');
+    ('DEF', 'DEF'),
+    ('GHI', 'GHIMARK');
 
 INSERT INTO prompts (text) 
   VALUES
