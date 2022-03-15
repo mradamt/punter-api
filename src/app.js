@@ -28,21 +28,24 @@ const readFile = (filePath) => {
 
 app.get('/dbreset', (req, res) => {
   Promise.all([
-    readFile(path.resolve(__dirname, './db/schema/create.sql')),
-    readFile(path.resolve(__dirname, './db/schema/development.sql'))
+    readFile(path.resolve(__dirname, 'db/schema/create.sql')),
+    readFile(path.resolve(__dirname, 'db/schema/development.sql'))
   ])
   .then(([create, seed]) => {
-    db.query(create);
-    db.query(seed);
-    // res.send(db.query('SELECT * from Users;'))
-  })
+    db.query(create)
+    .then(() => db.query(seed))
+    .then(() => {
+      console.log('database reset');
+      res.redirect('/users')
+    })}
+  )
   .catch(err => console.log(err))
 })
 
 app.get('/users', (req, res) => {
   db.query('select * from Users;')
   .then(({rows: users}) => {
-    res.send(res.json(users))
+    res.send(users)
   })
 })
 
