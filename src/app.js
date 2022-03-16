@@ -49,6 +49,19 @@ app.get('/users', (req, res) => {
   })
 })
 
+app.get('/posts', (req, res) => {
+  db.query(
+    `
+      SELECT * FROM posts
+      JOIN users_posts_reactions 
+        ON (posts.id = users_posts_reactions.post_id)
+      ORDER BY posts.creation_date;
+    `
+  ).then(({rows: posts}) => {
+    res.send(posts)
+  })
+})
+
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
 })
