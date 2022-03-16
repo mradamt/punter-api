@@ -58,6 +58,21 @@ app.get('/posts', (req, res) => {
         prompts.text as prompt, 
         posts.text as text, 
         users.username as author,
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 1)
+          AS r1,
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 2)
+          AS r2,
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 3)
+          AS r3,
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 4)
+          AS r4,
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
+          AS r5,
         creation_date
       FROM posts
       JOIN prompts
@@ -66,7 +81,8 @@ app.get('/posts', (req, res) => {
         ON (posts.user_id = users.id)
       JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
-      ORDER BY posts.creation_date;
+      GROUP BY prompts.text, posts.text, author, creation_date
+      ORDER BY posts.creation_date DESC;
     `
   ).then(({rows: posts}) => {
     res.send(posts)
