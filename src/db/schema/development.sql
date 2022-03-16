@@ -24,9 +24,9 @@ INSERT INTO posts (user_id, prompt_id, text, creation_date)
 
 INSERT INTO users_posts_reactions (user_id, post_id, reaction_type_id)
   VALUES
-    (1, 1, 2),
-    (1, 2, 2),
-    (2, 1, 3),
-    (2, 2, 3),
-    (3, 1, 4),
-    (3, 2, 4);
+    (1, 1, 1),
+    (1, 2, 1),
+    (2, 1, 1),
+    (2, 2, 1),
+    (3, 1, 2),
+    (3, 2, 2);
