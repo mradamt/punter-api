@@ -61,6 +61,8 @@ app.get('/posts', (req, res) => {
       FROM posts
       JOIN prompts
         ON (posts.prompt_id = prompts.id)
+      JOIN users
+        ON (posts.user_id = users.id)
       JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
       ORDER BY posts.creation_date;
