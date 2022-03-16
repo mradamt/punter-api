@@ -50,6 +50,7 @@ app.get('/users', (req, res) => {
   })
 })
 
+// app.get('/posts/$userId', (req, res) => {
 app.get('/posts', (req, res) => {
   db.query(
     `
