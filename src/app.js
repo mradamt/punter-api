@@ -36,7 +36,8 @@ app.get('/dbreset', (req, res) => {
     .then(() => db.query(seed))
     .then(() => {
       console.log('database reset');
-      res.redirect('/users')
+      // res.redirect('/users')
+      res.send('db reset successful')
     })}
   )
   .catch(err => console.log(err))
