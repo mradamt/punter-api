@@ -76,9 +76,18 @@ app.get('/posts', (req, res) => {
 app.get('/react', (req, res) => {
   db.query(
     `
-      SELECT post_id, COUNT(reaction_type_id) 
+      SELECT 
+        post_id, 
+        COUNT(reaction_type_id)
+          FILTER (WHERE reaction_type_id = 1)
+          AS r1,
+        COUNT(reaction_type_id)
+          FILTER (WHERE reaction_type_id = 2)
+          AS r2,
+        COUNT(reaction_type_id)
+          FILTER (WHERE reaction_type_id = 3)
+          AS r3
       FROM users_posts_reactions
-      WHERE reaction_type_id = 1
       GROUP BY post_id;
     `
   ).then(({rows:reactions}) => {
