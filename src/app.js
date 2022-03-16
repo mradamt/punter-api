@@ -86,7 +86,13 @@ app.get('/react', (req, res) => {
           AS r2,
         COUNT(reaction_type_id)
           FILTER (WHERE reaction_type_id = 3)
-          AS r3
+          AS r3,
+        COUNT(reaction_type_id)
+          FILTER (WHERE reaction_type_id = 4)
+          AS r4,
+        COUNT(reaction_type_id)
+          FILTER (WHERE reaction_type_id = 5)
+          AS r5
       FROM users_posts_reactions
       GROUP BY post_id;
     `
