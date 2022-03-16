@@ -73,6 +73,19 @@ app.get('/posts', (req, res) => {
   })
 })
 
+app.get('/react', (req, res) => {
+  db.query(
+    `
+      SELECT post_id, COUNT(reaction_type_id) 
+      FROM users_posts_reactions
+      WHERE reaction_type_id = 1
+      GROUP BY post_id;
+    `
+  ).then(({rows:reactions}) => {
+    res.send(reactions)
+  })
+})
+
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
 })
