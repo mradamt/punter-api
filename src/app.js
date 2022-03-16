@@ -53,7 +53,14 @@ app.get('/users', (req, res) => {
 app.get('/posts', (req, res) => {
   db.query(
     `
-      SELECT * FROM posts
+      SELECT 
+        prompts.text as prompt, 
+        posts.text as text, 
+        users.username as author,
+        creation_date
+      FROM posts
+      JOIN prompts
+        ON (posts.prompt_id = prompts.id)
       JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
       ORDER BY posts.creation_date;
