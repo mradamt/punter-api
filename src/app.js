@@ -117,6 +117,15 @@ app.get('/react', (req, res) => {
   })
 })
 
+app.get('/api/reaction_types', (req, res) => {
+  db.query(`
+    SELECT index, label, icon
+    FROM reaction_types;
+  `).then(({rows: reactionTypes}) => {
+    res.json(reactionTypes)
+  })
+})
+
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
 })
