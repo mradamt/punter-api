@@ -84,8 +84,8 @@ app.get('/api/posts', (req, res) => {
       GROUP BY prompts.text, posts.text, author, creation_date
       ORDER BY posts.creation_date DESC;
     `
-  ).then(({rows: posts}) => {
-    const processData = posts.map(({prompt, text, author, creation_date, r1, r2, r3, r4, r5}) => {
+  ).then(({rows: postsData}) => {
+    res.json(postsData.map(({prompt, text, author, creation_date, r1, r2, r3, r4, r5}) => {
       return {
         content: {prompt, text},
         user_reaction: null,
@@ -93,8 +93,7 @@ app.get('/api/posts', (req, res) => {
         author,
         creation_date
       }
-    })
-    res.json(processData)
+    }))
   })
 })
 
