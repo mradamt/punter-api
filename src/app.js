@@ -51,7 +51,7 @@ app.get('/users', (req, res) => {
 })
 
 // app.get('/posts/$userId', (req, res) => {
-app.get('/posts', (req, res) => {
+app.get('/api/posts', (req, res) => {
   db.query(
     `
       SELECT 
@@ -85,7 +85,16 @@ app.get('/posts', (req, res) => {
       ORDER BY posts.creation_date DESC;
     `
   ).then(({rows: posts}) => {
-    res.send(posts)
+    const processData = posts.map(({prompt, text, author, creation_date, r1, r2, r3, r4, r5}) => {
+      return {
+        content: {prompt, text},
+        user_reaction: null,
+        reaction_counts: [Number(r1), Number(r2), Number(r3), Number(r4), Number(r5)],
+        author,
+        creation_date
+      }
+    })
+    res.json(processData)
   })
 })
 
