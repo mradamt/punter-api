@@ -79,7 +79,7 @@ app.get('/api/posts', (req, res) => {
         ON (posts.prompt_id = prompts.id)
       JOIN users
         ON (posts.user_id = users.id)
-      JOIN users_posts_reactions 
+      LEFT JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
       GROUP BY prompts.text, posts.text, author, creation_date
       ORDER BY posts.creation_date DESC;
