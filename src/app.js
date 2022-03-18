@@ -11,6 +11,9 @@ const app = express();
 
 const db = require('./db');
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
 // const routes = require('./routes/')
 
 // Readfile function to read in db reset instructions, rtn Promise
@@ -95,6 +98,12 @@ app.get('/api/posts', (req, res) => {
       }
     }))
   })
+})
+
+app.post('/api/posts', (req, res) => {
+  console.log('request received:', req.body);
+  // find user_id, find prompt_id
+  // INSERT INTO posts (user_id, prompt_id, text, creation_date) VALUES (), ();
 })
 
 app.get('/react', (req, res) => {
