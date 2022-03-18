@@ -19,8 +19,21 @@ INSERT INTO reaction_types (index, label, icon)
 
 INSERT INTO posts (user_id, prompt_id, text, creation_date)
   VALUES
-    (1, 1, 'We could be having a lot of fun on ebikes made by Wheeebikes', '2022-01-01 09:00:00-08'),
-    (2, 1, 'We''d go to Totes Boats for all our boating needs', '2022-01-02 09:00:00-08');
+    (1, 1, 'We could be having a lot of fun on ebikes made by Wheeebikes', '2022-01-31 09:00:00-08'),
+    (2, 1, 'And we were shopping for a boat, where better than Totes Boats?', '2022-01-25 09:00:00-08'),
+    (3, 1, 'If McDonald''s ran out of soft serve again we could just go to Mockdonalds', '2022-01-20 09:00:00-08'),
+    (1, 1, 'The agency helping the unemployed re-enter the workforce would be called Resume', '2022-01-12 09:00:00-08'),
+    (2, 1, 'The agency helping unemployed Canadians re-enter the workforce would be called Resume Eh? ', '2022-01-09 09:00:00-08'),
+    (3, 1, 'Sheep shearing services would be provided by Ewe Beauty', '2022-01-08 10:00:00-08'),
+    (1, 1, 'Rogain would be lead sponsor of the Joe Rogain Podcast', '2022-01-08 09:00:00-08'),
+    (2, 1, 'When we needed a male dog for breeding we''d contact Bitch Please', '2022-01-07 09:00:00-08'),
+    (3, 1, 'We''d be treating itchy mosquito bites with balm called Itch? Please.', '2022-01-06 09:00:00-08'),
+    (1, 1, 'We''d cure dry eyes using Moist Your Eyes', '2022-01-05 14:00:00-08'),
+    (2, 1, 'We''d buy reclaimed wood from tRecycled or Forest Re-Products', '2022-01-04 13:00:00-08'),
+    (3, 1, 'We''d buy custom doors from D''Your Way', '2022-01-04 12:00:00-08'),
+    (1, 1, 'We''d buy fancy custom doors from Dior Ways', '2022-01-02 11:00:00-08'),
+    (2, 1, 'Ladies could shop skincare products from Moisturize Her', '2022-01-02 10:00:00-08'),
+    (3, 1, 'German men could shop skincare products from Moisturize Herre', '2022-01-01 09:00:00-08');
 
 INSERT INTO users_posts_reactions (user_id, post_id, reaction_type_id)
   VALUES
