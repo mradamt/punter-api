@@ -101,9 +101,8 @@ app.get('/api/posts', (req, res) => {
 })
 
 app.post('/api/posts', (req, res) => {
-  console.log('request received:', req.body);
-  // find user_id, find prompt_id
-  // INSERT INTO posts (user_id, prompt_id, text, creation_date) VALUES (), ();
+  // INSERT INTO posts (user_id, prompt_id, text, creation_date, spicy_language_bool) VALUES (), ();
+  res.send('oh hiii mark')
 })
 
 app.get('/react', (req, res) => {
