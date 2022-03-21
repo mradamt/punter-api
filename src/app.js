@@ -104,7 +104,7 @@ app.post('/api/posts', (req, res) => {
 // Fetch all reaction types
 app.get('/api/reaction_types', (req, res) => {
   db.query(`
-    SELECT index, label, icon
+    SELECT label, icon
     FROM reaction_types;
   `).then(({rows: reactionTypes}) => {
     res.json(reactionTypes)
