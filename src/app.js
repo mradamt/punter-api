@@ -46,12 +46,6 @@ app.get('/dbreset', (req, res) => {
   .catch(err => console.log(err))
 })
 
-app.get('/users', (req, res) => {
-  db.query('select * from Users;')
-  .then(({rows: users}) => {
-    res.send(users)
-  })
-})
 // app.get('/posts/$userId', (req, res) => {})
 
 // GET Posts should return all posts table fields as well as author's username and post's reaction totals
@@ -105,34 +99,6 @@ app.get('/api/posts', (req, res) => {
 app.post('/api/posts', (req, res) => {
   // INSERT INTO posts (user_id, prompt_id, text, creation_date, spicy_language_bool) VALUES (), ();
   res.send('oh hiii mark')
-})
-
-app.get('/react', (req, res) => {
-  db.query(
-    `
-      SELECT 
-        post_id, 
-        COUNT(reaction_type_id)
-          FILTER (WHERE reaction_type_id = 1)
-          AS r1,
-        COUNT(reaction_type_id)
-          FILTER (WHERE reaction_type_id = 2)
-          AS r2,
-        COUNT(reaction_type_id)
-          FILTER (WHERE reaction_type_id = 3)
-          AS r3,
-        COUNT(reaction_type_id)
-          FILTER (WHERE reaction_type_id = 4)
-          AS r4,
-        COUNT(reaction_type_id)
-          FILTER (WHERE reaction_type_id = 5)
-          AS r5
-      FROM users_posts_reactions
-      GROUP BY post_id;
-    `
-  ).then(({rows:reactions}) => {
-    res.send(reactions)
-  })
 })
 
 // Fetch all reaction types
