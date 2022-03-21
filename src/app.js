@@ -52,8 +52,10 @@ app.get('/users', (req, res) => {
     res.send(users)
   })
 })
+// app.get('/posts/$userId', (req, res) => {})
 
-// app.get('/posts/$userId', (req, res) => {
+// GET Posts should return all posts table fields as well as author's username and post's reaction totals
+// Prompts & reaction_types will be fetched by frontend separately, including them here would double-fetch
 app.get('/api/posts', (req, res) => {
   db.query(
     `
@@ -133,6 +135,7 @@ app.get('/react', (req, res) => {
   })
 })
 
+// Fetch all reaction types
 app.get('/api/reaction_types', (req, res) => {
   db.query(`
     SELECT index, label, icon
@@ -141,6 +144,9 @@ app.get('/api/reaction_types', (req, res) => {
     res.json(reactionTypes)
   })
 })
+
+// Fetch all prompts
+// app.get('/api/prompts', (req, res) => {})
 
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
