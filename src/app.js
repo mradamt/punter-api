@@ -53,10 +53,14 @@ app.get('/dbreset', (req, res) => {
 app.get('/api/posts', (req, res) => {
   db.query(
     `
-      SELECT 
-        prompts.text as prompt, 
-        posts.text as text, 
-        users.username as author,
+      SELECT
+        posts.id, 
+        posts.user_id,
+        users.username, 
+        posts.prompt_id,
+        posts.creation_date   as creation_date, 
+        posts.spicy_language  as spicy_language, 
+        posts.text            as text,
         COUNT(users_posts_reactions.reaction_type_id)
           FILTER (WHERE users_posts_reactions.reaction_type_id = 1)
           AS r1,
@@ -71,16 +75,13 @@ app.get('/api/posts', (req, res) => {
           AS r4,
         COUNT(users_posts_reactions.reaction_type_id)
           FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
-          AS r5,
-        creation_date
+          AS r5
       FROM posts
-      JOIN prompts
-        ON (posts.prompt_id = prompts.id)
       JOIN users
         ON (posts.user_id = users.id)
       LEFT JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
-      GROUP BY prompts.text, posts.text, author, creation_date
+      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text
       ORDER BY posts.creation_date DESC;
     `
   ).then(({rows: postsData}) => {
