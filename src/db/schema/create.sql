@@ -22,6 +22,7 @@ CREATE TABLE posts (
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   prompt_id INTEGER REFERENCES prompts(id) ON DELETE CASCADE,
   text varchar(255) NOT NULL,
+  spicy_language BOOL DEFAULT FALSE,
   creation_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP(0) NOT NULL
 );
 
