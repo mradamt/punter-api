@@ -117,11 +117,12 @@ app.post('/api/posts', (req, res) => {
     "spicy_language": false,
   }
 
+  const {user_id, prompt_id, text, spicy_language} = req.body
   db.query(
     `
       INSERT INTO posts (user_id, prompt_id, text, spicy_language_bool) 
       VALUES ($1, $2, $3, $4);
-    `, [req.body.user_id, req.body.prompt_id, req.body.text, req.body.spicy_language])
+    `, [user_id, prompt_id, text, spicy_language])
   res.send('oh hiii mark')
 })
 
