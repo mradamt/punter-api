@@ -85,19 +85,11 @@ app.get('/api/posts', (req, res) => {
   })
 })
 app.post('/api/posts', (req, res) => {
-  // INSERT INTO posts (user_id, prompt_id, text, creation_date, spicy_language_bool) VALUES (), ();
-  let reqData = {
-    "user_id": 1,
-    "prompt_id": 1,
-    "text": "placeholder post 0",
-    "spicy_language": false,
-  }
-
   const {user_id, prompt_id, text, spicy_language} = req.body
-  db.query(
-    `
+  db.query(`
       INSERT INTO posts (user_id, prompt_id, text, spicy_language_bool) 
-      VALUES ($1, $2, $3, $4);
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
     `, [user_id, prompt_id, text, spicy_language])
   res.send('oh hiii mark')
 })
