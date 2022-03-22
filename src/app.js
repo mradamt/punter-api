@@ -52,27 +52,23 @@ app.get('/api/posts', (req, res) => {
   db.query(`
     SELECT
       posts.id, 
-      posts.user_id,
-      users.username, 
-      posts.prompt_id,
       posts.creation_date   as creation_date, 
       posts.spicy_language  as spicy_language, 
       posts.text            as text,
-      COUNT(users_posts_reactions.reaction_type_id)
-        FILTER (WHERE users_posts_reactions.reaction_type_id = 1)
-        AS r1,
-      COUNT(users_posts_reactions.reaction_type_id)
-        FILTER (WHERE users_posts_reactions.reaction_type_id = 2)
-        AS r2,
-      COUNT(users_posts_reactions.reaction_type_id)
-        FILTER (WHERE users_posts_reactions.reaction_type_id = 3)
-        AS r3,
-      COUNT(users_posts_reactions.reaction_type_id)
-        FILTER (WHERE users_posts_reactions.reaction_type_id = 4)
-        AS r4,
-      COUNT(users_posts_reactions.reaction_type_id)
-        FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
-        AS r5
+      posts.prompt_id,
+      json_build_object('id', posts.user_id, 'username', users.username) as author, 
+      json_build_array(
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 1),
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 2),
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 3),
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 4),
+        COUNT(users_posts_reactions.reaction_type_id)
+          FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
+      ) as reaction_counts
     FROM posts
     JOIN users
       ON (posts.user_id = users.id)
