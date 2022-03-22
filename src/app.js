@@ -78,9 +78,10 @@ app.get('/api/posts', (req, res) => {
     ORDER BY posts.creation_date DESC;
   `).then(({rows: posts}) => {
     res.json(
-      posts.reduce((previous, current) => {
-        return {...previous, [current.id]: current}
-      })
+      posts.reduce(
+        (previous, current) => ({...previous, [current.id]: current}),
+      {}
+      )
     )
   })
 })
