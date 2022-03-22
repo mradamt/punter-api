@@ -85,12 +85,23 @@ app.get('/api/posts', (req, res) => {
       ORDER BY posts.creation_date DESC;
     `
   ).then(({rows: postsData}) => {
-    res.json(postsData.map(({prompt, text, author, creation_date, r1, r2, r3, r4, r5}) => {
+    res.json(postsData.map(({
+      id,
+      user_id, username,
+      prompt_id,
+      creation_date,
+      spicy_language,
+      text,
+      r1, r2, r3, r4, r5
+    }) => {
       return {
-        content: {prompt, text},
-        user_reaction: null,
+        id,
+        author: {id: user_id, username},
+        prompt_id,
+        text,
+        spicy_language,
+        user_reaction_index: null,
         reaction_counts: [Number(r1), Number(r2), Number(r3), Number(r4), Number(r5)],
-        author,
         creation_date
       }
     }))
