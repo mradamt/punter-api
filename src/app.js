@@ -136,7 +136,14 @@ app.get('/api/reaction_types', (req, res) => {
 })
 
 // Fetch all prompts
-// app.get('/api/prompts', (req, res) => {})
+app.get('/api/prompts', (req, res) => {
+  db.query(`
+    SELECT id, text
+    FROM prompts;
+  `).then(({rows: prompts}) => {
+    res.json(prompts)
+  })
+})
 
 app.get('/', (req, res) => {
   res.send('Oh hi Mark')
