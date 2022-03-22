@@ -46,68 +46,44 @@ app.get('/dbreset', (req, res) => {
   .catch(err => console.log(err))
 })
 
-// app.get('/posts/$userId', (req, res) => {})
-
-// GET Posts should return all posts table fields as well as author's username and post's reaction totals
+// GET all posts, include author id, username and post's reaction counts
 // Prompts & reaction_types will be fetched by frontend separately, including them here would double-fetch
 app.get('/api/posts', (req, res) => {
-  db.query(
-    `
-      SELECT
-        posts.id, 
-        posts.user_id,
-        users.username, 
-        posts.prompt_id,
-        posts.creation_date   as creation_date, 
-        posts.spicy_language  as spicy_language, 
-        posts.text            as text,
-        COUNT(users_posts_reactions.reaction_type_id)
-          FILTER (WHERE users_posts_reactions.reaction_type_id = 1)
-          AS r1,
-        COUNT(users_posts_reactions.reaction_type_id)
-          FILTER (WHERE users_posts_reactions.reaction_type_id = 2)
-          AS r2,
-        COUNT(users_posts_reactions.reaction_type_id)
-          FILTER (WHERE users_posts_reactions.reaction_type_id = 3)
-          AS r3,
-        COUNT(users_posts_reactions.reaction_type_id)
-          FILTER (WHERE users_posts_reactions.reaction_type_id = 4)
-          AS r4,
-        COUNT(users_posts_reactions.reaction_type_id)
-          FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
-          AS r5
-      FROM posts
-      JOIN users
-        ON (posts.user_id = users.id)
-      LEFT JOIN users_posts_reactions 
-        ON (posts.id = users_posts_reactions.post_id)
-      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text
-      ORDER BY posts.creation_date DESC;
-    `
-  ).then(({rows: postsData}) => {
-    res.json(postsData.map(({
-      id,
-      user_id, username,
-      prompt_id,
-      creation_date,
-      spicy_language,
-      text,
-      r1, r2, r3, r4, r5
-    }) => {
-      return {
-        id,
-        author: {id: user_id, username},
-        prompt_id,
-        text,
-        spicy_language,
-        user_reaction_index: null,
-        reaction_counts: [Number(r1), Number(r2), Number(r3), Number(r4), Number(r5)],
-        creation_date
-      }
-    }))
+  db.query(`
+    SELECT
+      posts.id, 
+      posts.user_id,
+      users.username, 
+      posts.prompt_id,
+      posts.creation_date   as creation_date, 
+      posts.spicy_language  as spicy_language, 
+      posts.text            as text,
+      COUNT(users_posts_reactions.reaction_type_id)
+        FILTER (WHERE users_posts_reactions.reaction_type_id = 1)
+        AS r1,
+      COUNT(users_posts_reactions.reaction_type_id)
+        FILTER (WHERE users_posts_reactions.reaction_type_id = 2)
+        AS r2,
+      COUNT(users_posts_reactions.reaction_type_id)
+        FILTER (WHERE users_posts_reactions.reaction_type_id = 3)
+        AS r3,
+      COUNT(users_posts_reactions.reaction_type_id)
+        FILTER (WHERE users_posts_reactions.reaction_type_id = 4)
+        AS r4,
+      COUNT(users_posts_reactions.reaction_type_id)
+        FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
+        AS r5
+    FROM posts
+    JOIN users
+      ON (posts.user_id = users.id)
+    LEFT JOIN users_posts_reactions 
+      ON (posts.id = users_posts_reactions.post_id)
+    GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text
+    ORDER BY posts.creation_date DESC;
+  `).then(({rows: posts}) => {
+    res.json(posts)
   })
 })
-
 app.post('/api/posts', (req, res) => {
   // INSERT INTO posts (user_id, prompt_id, text, creation_date, spicy_language_bool) VALUES (), ();
   let reqData = {
@@ -126,7 +102,7 @@ app.post('/api/posts', (req, res) => {
   res.send('oh hiii mark')
 })
 
-// Fetch all reaction types
+// GET all reaction types
 app.get('/api/reaction_types', (req, res) => {
   db.query(`
     SELECT label, icon
@@ -136,7 +112,7 @@ app.get('/api/reaction_types', (req, res) => {
   })
 })
 
-// Fetch all prompts
+// GET all prompts
 app.get('/api/prompts', (req, res) => {
   db.query(`
     SELECT id, text
