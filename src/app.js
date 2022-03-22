@@ -77,7 +77,11 @@ app.get('/api/posts', (req, res) => {
     GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text
     ORDER BY posts.creation_date DESC;
   `).then(({rows: posts}) => {
-    res.json(posts)
+    res.json(
+      posts.reduce((previous, current) => {
+        return {...previous, [current.id]: current}
+      })
+    )
   })
 })
 app.post('/api/posts', (req, res) => {
