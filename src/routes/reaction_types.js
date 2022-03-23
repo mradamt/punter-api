@@ -3,10 +3,15 @@ const router = require('express').Router();
 module.exports = (db) => {
   router.get('/reaction_types', (req, res) => {
     db.query(`
-      SELECT label, icon
+      SELECT id, label, icon
       FROM reaction_types;
     `).then(({rows: reactionTypes}) => {
-      res.json(reactionTypes)
+      res.json(
+        reactionTypes.reduce(
+          (prev, current) => ({...prev, [current.id]: current}),
+          {}
+        )
+      )
     })
   })
 

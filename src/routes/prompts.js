@@ -6,7 +6,12 @@ module.exports = (db) => {
       SELECT id, text
       FROM prompts;
     `).then(({rows: prompts}) => {
-      res.json(prompts)
+      res.json(
+        prompts.reduce(
+          (prev, current) => ({...prev, [current.id]: current}),
+          {}
+        )
+      )
     })
   })
 
