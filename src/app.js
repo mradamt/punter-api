@@ -9,6 +9,7 @@ const helmet = require('helmet')
 
 const posts = require('./routes/posts')
 const reaction_types = require('./routes/reaction_types')
+const prompts = require('./routes/prompts')
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.use('/api', posts(db))
 app.use('/api', reaction_types(db))
+app.use('/api', prompts(db))
 
 // const routes = require('./routes/')
 
@@ -52,18 +54,6 @@ app.get('/dbreset', (req, res) => {
   .catch(err => console.log(err))
 })
 
-
-
-
-// GET all prompts
-app.get('/api/prompts', (req, res) => {
-  db.query(`
-    SELECT id, text
-    FROM prompts;
-  `).then(({rows: prompts}) => {
-    res.json(prompts)
-  })
-})
 
 // GET user's reactions
 app.get('/api/user_reactions/:userId', (req, res) => {
