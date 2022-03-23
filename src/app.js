@@ -6,7 +6,9 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
+
 const posts = require('./routes/posts')
+const reaction_types = require('./routes/reaction_types')
 
 const app = express();
 
@@ -16,6 +18,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.use('/api', posts(db))
+app.use('/api', reaction_types(db))
 
 // const routes = require('./routes/')
 
@@ -50,15 +53,7 @@ app.get('/dbreset', (req, res) => {
 })
 
 
-// GET all reaction types
-app.get('/api/reaction_types', (req, res) => {
-  db.query(`
-    SELECT label, icon
-    FROM reaction_types;
-  `).then(({rows: reactionTypes}) => {
-    res.json(reactionTypes)
-  })
-})
+
 
 // GET all prompts
 app.get('/api/prompts', (req, res) => {
