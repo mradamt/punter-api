@@ -12,7 +12,6 @@ const helmet = require('helmet')
 const posts = require('./routes/posts')
 const reaction_types = require('./routes/reaction_types')
 const prompts = require('./routes/prompts')
-const user_reactions = require('./routes/user_reactions')
 
 // Create the 'app'
 const app = express();
@@ -30,7 +29,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/api', posts(db))
 app.use('/api', reaction_types(db))
 app.use('/api', prompts(db))
-app.use('/api', user_reactions(db))
 
 // Readfile function to read in db reset instructions, rtn Promise
 const readFile = (filePath) => {
