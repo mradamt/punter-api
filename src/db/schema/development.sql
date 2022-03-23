@@ -38,8 +38,11 @@ INSERT INTO posts (creation_date, user_id, prompt_id, spicy_language, text)
 INSERT INTO users_posts_reactions (user_id, post_id, reaction_type_id)
   VALUES
     (1, 1, 1),
-    (2, 1, 1),
-    (3, 1, 2),
     (1, 2, 1),
-    (2, 2, 1),
-    (3, 2, 2);
+    (1, 3, 1),
+    (2, 1, 1),
+    (2, 2, 2),
+    (2, 3, 3),
+    (3, 1, 3),
+    (3, 2, 3),
+    (3, 3, 3);

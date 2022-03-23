@@ -1,8 +1,9 @@
 const router = require('express').Router();
 
 module.exports = (db) => {
-  // GET posts : include author: {id, username} object and post's reaction counts array
-  router.get('/posts', (req, res) => {
+  // GET posts : include author:{id, username}, reaction_counts:[...], user_reaction_index
+  router.get('/posts/:userId', (req, res) => {
+    const userId = req.params.userId || null;
     db.query(`
       SELECT
         posts.id, 
@@ -10,6 +11,10 @@ module.exports = (db) => {
         posts.spicy_language  as spicy_language, 
         posts.text            as text,
         posts.prompt_id,
+        (SELECT users_posts_reactions.reaction_type_id
+          FROM users_posts_reactions
+          WHERE users_posts_reactions.user_id = $1
+            AND users_posts_reactions.post_id = posts.id) as user_reaction_index,
         json_build_object('id', posts.user_id, 'username', users.username) as author, 
         json_build_array(
           COUNT(users_posts_reactions.reaction_type_id)
@@ -28,9 +33,9 @@ module.exports = (db) => {
         ON (posts.user_id = users.id)
       LEFT JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
-      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text
+      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text, user_reaction_index
       ORDER BY posts.creation_date DESC;
-    `).then(({rows: posts}) => {
+    `, [userId]).then(({rows: posts}) => {
       res.json(
         posts.reduce(
           (previous, current) => ({...previous, [current.id]: current}),
@@ -38,6 +43,10 @@ module.exports = (db) => {
         )
       )
     })
+  })
+
+  router.get('/posts', (req, res) => {
+    res.redirect('/api/posts/0')
   })
 
   // POST posts

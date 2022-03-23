@@ -21,8 +21,8 @@ const app = express();
 const db = require('./db');
 
 // Setup app tools
-app.use(helmet);
-app.use(cors);
+app.use(cors());
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
