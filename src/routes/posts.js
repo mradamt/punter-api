@@ -35,14 +35,11 @@ module.exports = (db) => {
         ON (posts.id = users_posts_reactions.post_id)
       GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text, user_reaction_index
       ORDER BY posts.creation_date DESC;
-    `, [userId]).then(({rows: posts}) => {
-      res.json(
-        posts.reduce(
-          (previous, current) => ({...previous, [current.id]: current}),
-        {}
-        )
-      )
+    `, [userId])
+    .then(({rows: posts}) => {
+      res.json(posts)
     })
+    .catch(err => console.log(err))
   })
 
   router.get('/posts', (req, res) => {
