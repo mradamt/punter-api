@@ -4,6 +4,13 @@ module.exports = (db) => {
   // GET posts : include author:{id, username}, reaction_counts:[...], user_reaction_index
   router.get('/posts/:userId', (req, res) => {
     const userId = req.params.userId || null;
+    const reactionTypeIds = [1,2,3,4,5] // reaction types to output reaction counts for
+    const reaction_countsQuery = reactionTypeIds.map(id => {
+      return `${id}, 
+        COUNT (users_posts_reactions.reaction_type_id) FILTER 
+        (WHERE users_posts_reactions.reaction_type_id = ${id})`
+    }).toString()
+
     db.query(`
       SELECT
         posts.id, 
@@ -16,18 +23,7 @@ module.exports = (db) => {
           WHERE users_posts_reactions.user_id = $1
             AND users_posts_reactions.post_id = posts.id) as user_reaction_index,
         json_build_object('id', posts.user_id, 'username', users.username) as author, 
-        json_build_array(
-          COUNT(users_posts_reactions.reaction_type_id)
-            FILTER (WHERE users_posts_reactions.reaction_type_id = 1),
-          COUNT(users_posts_reactions.reaction_type_id)
-            FILTER (WHERE users_posts_reactions.reaction_type_id = 2),
-          COUNT(users_posts_reactions.reaction_type_id)
-            FILTER (WHERE users_posts_reactions.reaction_type_id = 3),
-          COUNT(users_posts_reactions.reaction_type_id)
-            FILTER (WHERE users_posts_reactions.reaction_type_id = 4),
-          COUNT(users_posts_reactions.reaction_type_id)
-            FILTER (WHERE users_posts_reactions.reaction_type_id = 5)
-        ) as reaction_counts
+        json_build_array(${reaction_countsQuery}) as reaction_counts
       FROM posts
       JOIN users
         ON (posts.user_id = users.id)
