@@ -14,16 +14,19 @@ module.exports = (db) => {
     db.query(`
       SELECT
         posts.id, 
-        posts.creation_date   as creation_date, 
-        posts.spicy_language  as spicy_language, 
-        posts.text            as text,
         posts.prompt_id,
+        posts.creation_date   AS creation_date, 
+        posts.spicy_language  AS spicy_language, 
+        posts.text            AS text,
+        json_build_object('id', posts.user_id, 'username', users.username) 
+          AS author,
+        json_build_object(${reaction_countsQuery}) 
+          AS reaction_counts,
         (SELECT users_posts_reactions.reaction_type_id
-          FROM users_posts_reactions
-          WHERE users_posts_reactions.user_id = $1
-          AND users_posts_reactions.post_id = posts.id) as user_reaction_index,
-        json_build_object('id', posts.user_id, 'username', users.username) as author, 
-        json_build_object(${reaction_countsQuery}) as reaction_counts
+            FROM users_posts_reactions
+            WHERE users_posts_reactions.user_id = $1
+            AND users_posts_reactions.post_id = posts.id
+        ) AS user_reaction_index
       FROM posts
       JOIN users
         ON (posts.user_id = users.id)
@@ -46,10 +49,10 @@ module.exports = (db) => {
   router.post('/posts', (req, res) => {
     const {user_id, prompt_id, text, spicy_language} = req.body
     db.query(`
-        INSERT INTO posts (user_id, prompt_id, text, spicy_language) 
+      INSERT INTO posts (user_id, prompt_id, text, spicy_language) 
         VALUES ($1, $2, $3, $4)
         RETURNING *;
-      `, [user_id, prompt_id, text, spicy_language])
+    `, [user_id, prompt_id, text, spicy_language])
     .then(data => {
       res.json(data.rows[0])
     })
