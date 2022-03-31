@@ -17,11 +17,11 @@ module.exports = (db) => {
         posts.creation_date   as creation_date, 
         posts.spicy_language  as spicy_language, 
         posts.text            as text,
+        posts.prompt_id,
         (SELECT users_posts_reactions.reaction_type_id
           FROM users_posts_reactions
           WHERE users_posts_reactions.user_id = $1
           AND users_posts_reactions.post_id = posts.id) as user_reaction_index,
-        json_build_object('id', posts.prompt_id) as prompt,
         json_build_object('id', posts.user_id, 'username', users.username) as author, 
         json_build_object(${reaction_countsQuery}) as reaction_counts
       FROM posts
