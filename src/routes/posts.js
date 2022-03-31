@@ -46,11 +46,14 @@ module.exports = (db) => {
   router.post('/posts', (req, res) => {
     const {user_id, prompt_id, text, spicy_language} = req.body
     db.query(`
-        INSERT INTO posts (user_id, prompt_id, text, spicy_language_bool) 
+        INSERT INTO posts (user_id, prompt_id, text, spicy_language) 
         VALUES ($1, $2, $3, $4)
         RETURNING *;
       `, [user_id, prompt_id, text, spicy_language])
-    res.send('oh hiii mark')
+    .then(data => {
+      res.json(data.rows[0])
+    })
+    .catch(err => console.log(err))
   })
 
   return router
