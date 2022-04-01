@@ -11,8 +11,8 @@ module.exports = (db) => {
         DO UPDATE SET reaction_type_id = EXCLUDED.reaction_type_id
       RETURNING *;
     `, [userId, postId, reactionId])
-    .then(data => {
-      console.log('data:', data);
+    .then(({rows: userReaction}) => {
+      res.json(userReaction)
     })
     .catch(err => console.log(err))
   })
