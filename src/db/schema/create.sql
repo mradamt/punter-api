@@ -34,8 +34,8 @@ CREATE TABLE reaction_types (
 );
 
 CREATE TABLE users_posts_reactions (
-  id SERIAL PRIMARY KEY NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
-  reaction_type_id INTEGER REFERENCES reaction_types(id) ON DELETE CASCADE
+  reaction_type_id INTEGER REFERENCES reaction_types(id) ON DELETE CASCADE,
+  CONSTRAINT user_post_reaction PRIMARY KEY (user_id, post_id)
 )
