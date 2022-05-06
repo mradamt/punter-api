@@ -5,13 +5,9 @@ module.exports = (db) => {
     db.query(`
       SELECT id, label, icon
       FROM reaction_types;
-    `).then(({rows: reactionTypes}) => {
-      res.json(
-        reactionTypes.reduce(
-          (prev, current) => ({...prev, [current.id]: current}),
-          {}
-        )
-      )
+    `)
+    .then(({rows: reactionTypes}) => {
+      res.json(reactionTypes)
     })
   })
 

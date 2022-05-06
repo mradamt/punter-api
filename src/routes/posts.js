@@ -6,8 +6,7 @@ module.exports = (db) => {
     const userId = req.params.userId || null;
     const reactionTypeIds = [1,2,3,4,5] // reaction types to output reaction counts for
     const reaction_countsQuery = reactionTypeIds.map(id => {
-      return `${id}, 
-        COUNT (users_posts_reactions.reaction_type_id) FILTER 
+      return `COUNT (users_posts_reactions.reaction_type_id) FILTER 
         (WHERE users_posts_reactions.reaction_type_id = ${id})`
     }).toString()
 
@@ -20,7 +19,7 @@ module.exports = (db) => {
         posts.text            AS text,
         json_build_object('id', posts.user_id, 'username', users.username) 
           AS author,
-        json_build_object(${reaction_countsQuery}) 
+        json_build_array(${reaction_countsQuery}) 
           AS reaction_counts,
         (SELECT users_posts_reactions.reaction_type_id
             FROM users_posts_reactions
