@@ -5,7 +5,8 @@ module.exports = (db) => {
     db.query(`
       SELECT id, text
       FROM prompts;
-    `).then(({rows: prompts}) => {
+    `).
+    then(({rows: prompts}) => {
       res.json(
         prompts.reduce(
           (prev, current) => ({...prev, [current.id]: current}),
@@ -13,6 +14,7 @@ module.exports = (db) => {
         )
       )
     })
+    .catch(err => console.log(err))
   })
 
   return router

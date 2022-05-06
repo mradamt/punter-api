@@ -9,6 +9,7 @@ module.exports = (db) => {
     .then(({rows: reactionTypes}) => {
       res.json(reactionTypes)
     })
+    .catch(err => console.log(err))
   })
 
   return router;
