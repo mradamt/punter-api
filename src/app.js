@@ -26,9 +26,12 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Define reaction types (by id) to display in app
+const reactionTypeIds = [1,2,3,4,5] 
+
 // Mount resource routes
-app.use('/api', posts(db))
-app.use('/api', reaction_types(db))
+app.use('/api', posts(db, reactionTypeIds))
+app.use('/api', reaction_types(db, reactionTypeIds))
 app.use('/api', prompts(db))
 app.use('/api', user_post_reaction(db))
 

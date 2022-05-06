@@ -1,15 +1,25 @@
 const router = require('express').Router();
 
-module.exports = (db) => {
-  // GET posts : include author:{id, username}, reaction_counts:[...], user_reaction_index
+module.exports = (db, reactionTypeIds) => {
+  // GET posts
   router.get('/posts/:userId', (req, res) => {
+    /* Target output format is array of:
+        {
+          "id": 1,
+          "prompt_id": 1,
+          "creation_date": "2022-01-31T17:00:00.000Z",
+          "spicy_language": false,
+          "text": "sample post text",
+          "author": {"id": 1, "username": "ABC"},
+          "reaction_counts": [2,0,1,0,0],
+          "user_reaction_id": 3
+        }
+    */
     const userId = req.params.userId || null;
-    const reactionTypeIds = [1,2,3,4,5] // reaction types to output reaction counts for
-    const reaction_countsQuery = reactionTypeIds.map(id => {
-      return `COUNT (users_posts_reactions.reaction_type_id) FILTER 
-        (WHERE users_posts_reactions.reaction_type_id = ${id})`
-    }).toString()
-
+    const reaction_countsQuery = reactionTypeIds.map(id => `
+      COUNT (users_posts_reactions.reaction_type_id) 
+      FILTER (WHERE users_posts_reactions.reaction_type_id = ${id})
+    `).toString()
     db.query(`
       SELECT
         posts.id, 
@@ -25,13 +35,13 @@ module.exports = (db) => {
             FROM users_posts_reactions
             WHERE users_posts_reactions.user_id = $1
             AND users_posts_reactions.post_id = posts.id
-        ) AS user_reaction_index
+        ) AS user_reaction_id
       FROM posts
       JOIN users
         ON (posts.user_id = users.id)
       LEFT JOIN users_posts_reactions 
         ON (posts.id = users_posts_reactions.post_id)
-      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text, user_reaction_index
+      GROUP BY posts.id, posts.user_id, users.username, posts.prompt_id, creation_date, spicy_language, text, user_reaction_id
       ORDER BY posts.creation_date DESC;
     `, [userId])
     .then(({rows: posts}) => {
